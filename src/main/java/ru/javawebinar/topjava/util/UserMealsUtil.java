@@ -3,11 +3,11 @@ package ru.javawebinar.topjava.util;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExcess;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
@@ -28,8 +28,32 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        // создаем список
+        List<UserMealWithExcess> list = new ArrayList<>();
+        //создаем Map, где key - день, а value - условие по каллориям
+        Map<LocalDate, Boolean> map = new HashMap<>();
+        // создаем Set по дням и для нахождения суммы калорий проходим сетом по листу и записываем в мапу
+        Set<LocalDate> set = new HashSet<>();
+        for (UserMeal meal: meals){
+            set.add(meal.getDateTime().toLocalDate());
+        }
+        for (LocalDate localDate: set){
+            int sum = 0;
+            for(UserMeal meal: meals){
+                if(localDate.equals(meal.getDateTime().toLocalDate())) sum += meal.getCalories();
+            }
+            boolean excess = sum <= caloriesPerDay;
+            map.put(localDate, excess);
+        }
+
+        // запускаем цикл по коллекции для проверки условий и формирования списка
+        for (UserMeal meal : meals){
+            if(TimeUtil.isBetweenInclusive(meal.getDateTime().toLocalTime(), startTime, endTime))
+                list.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDateTime().toLocalDate())));
+        }
+
         // TODO return filtered list with excess. Implement by cycles
-        return null;
+        return list;
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {

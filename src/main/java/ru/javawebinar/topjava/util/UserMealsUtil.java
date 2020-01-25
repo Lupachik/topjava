@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.util;
 
-import com.sun.istack.internal.NotNull;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExcess;
 
@@ -33,24 +32,14 @@ public class UserMealsUtil {
 
         List<UserMealWithExcess> list = new ArrayList<>();
 
-        Map<LocalDate, Boolean> map = new HashMap<>();
-
-        Set<LocalDate> set = new HashSet<>();
+        Map<LocalDate, Integer> map = new HashMap<>();
         for (UserMeal meal: meals){
-            set.add(meal.getDate());
-        }
-        for (LocalDate localDate: set){
-            int sum = 0;
-            for(UserMeal meal: meals){
-                if(localDate.equals(meal.getDate())) sum += meal.getCalories();
-            }
-            boolean excess = sum <= caloriesPerDay;
-            map.put(localDate, excess);
+            map.merge(meal.getDate(), meal.getCalories(), (oldVal, newVal) -> oldVal + newVal);
         }
 
         for (UserMeal meal : meals){
             if(TimeUtil.isBetweenInclusive(meal.getDateTime().toLocalTime(), startTime, endTime))
-                list.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDate())));
+                list.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDate()) <= caloriesPerDay));
         }
 
         return list;

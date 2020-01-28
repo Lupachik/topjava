@@ -30,17 +30,14 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
+        Map<LocalDate, Integer> map = new HashMap<>();
+
+        meals.forEach(meal -> map.merge(meal.getDate(), meal.getCalories(), Integer::sum));
+
         List<UserMealWithExcess> list = new ArrayList<>();
 
-        Map<LocalDate, Integer> map = new HashMap<>();
-        for (UserMeal meal: meals){
-            map.merge(meal.getDate(), meal.getCalories(), (oldVal, newVal) -> oldVal + newVal);
-        }
-
-        for (UserMeal meal : meals){
-            if(TimeUtil.isBetweenInclusive(meal.getDateTime().toLocalTime(), startTime, endTime))
-                list.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDate()) <= caloriesPerDay));
-        }
+        meals.forEach(meal -> {if (TimeUtil.isBetweenInclusive(meal.getDateTime().toLocalTime(), startTime, endTime))
+                list.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDate()) > caloriesPerDay));});
 
         return list;
     }
@@ -51,11 +48,9 @@ public class UserMealsUtil {
                 .stream()
                 .collect(Collectors.groupingBy(UserMeal::getDate, Collectors.summingInt(UserMeal::getCalories)));
 
-        List<UserMealWithExcess> list = meals
-                .stream()
+        return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenInclusive(LocalTime.from(meal.getDateTime()), startTime, endTime))
-                .map(meal -> new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDate()) <= caloriesPerDay))
+                .map(meal -> new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
-        return list;
     }
 }

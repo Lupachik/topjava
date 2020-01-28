@@ -37,8 +37,9 @@ public class UserMealsUtil {
         List<UserMealWithExcess> listUserMealWithExcessesForTime = new ArrayList<>();
 
         meals.forEach(meal -> {
-            if (TimeUtil.isBetweenInclusive(meal.getDateTime().toLocalTime(), startTime, endTime))
+            if (TimeUtil.isBetweenInclusive(meal.getDateTime().toLocalTime(), startTime, endTime)) {
                 listUserMealWithExcessesForTime.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), mapSumCaloriesDay.get(meal.getDate()) > caloriesPerDay));
+            }
         });
 
         return listUserMealWithExcessesForTime;

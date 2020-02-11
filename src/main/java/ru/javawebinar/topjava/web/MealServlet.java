@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.storage.MealsStorage;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -21,8 +20,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("forward to meals");
-        request.setCharacterEncoding("UTF-8");
-        List<MealTo> storage = MealsUtil.filteredByStreams(MealsStorage.STORAGE, LocalTime.MIN, LocalTime.MAX, 2000);
+        List<MealTo> storage = MealsUtil.filteredByStreams(MealsUtil.STORAGE, LocalTime.MIN, LocalTime.MAX, 2000);
         request.setAttribute("mealList", storage);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
 

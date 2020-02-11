@@ -34,11 +34,10 @@
         </tr>
         <jsp:useBean id="mealList" scope="request" type="java.util.List"/>
         <c:forEach var="meal" items="${mealList}">
-
-            ${meal.isExcess()?'<tr class="exceed">':'<tr class="notExceed">'}
-                <td>${TimeUtil.dateToString(meal.getDateTime())}</td>
-                <td>${meal.getDescription()}</td>
-                <td>${meal.getCalories()}</td>
+            <tr class=${meal.excess?'"exceed"': '"notExceed"'}>
+                <td>${TimeUtil.dateToString(meal.dateTime)}</td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
             </tr>
         </c:forEach>
     </table>

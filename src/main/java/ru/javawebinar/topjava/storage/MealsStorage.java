@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MealsStorage {
-    public static  final List<Meal> STORAGE = new ArrayList<>();
+    public static final List<Meal> STORAGE = new ArrayList<>();
+
     static {
         STORAGE.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
         STORAGE.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));

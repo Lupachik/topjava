@@ -23,7 +23,6 @@ public class MealServlet extends HttpServlet {
         log.debug("forward to meals");
         request.setCharacterEncoding("UTF-8");
         List<MealTo> storage = MealsUtil.filteredByStreams(MealsStorage.STORAGE, LocalTime.MIN, LocalTime.MAX, 2000);
-        request.setAttribute("name", "Meals");
         request.setAttribute("mealList", storage);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
 

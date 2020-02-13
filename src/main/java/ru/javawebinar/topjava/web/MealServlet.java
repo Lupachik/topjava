@@ -81,8 +81,8 @@ public class MealServlet extends HttpServlet {
             mealDao.add(meal);
         } else {
             log.debug("edit meal");
-            mealDao.delete(Integer.parseInt(mealId));
-            Meal meal = new Meal(LocalDateTime.parse(request.getParameter("date")),
+//            mealDao.delete(Integer.parseInt(mealId));
+            Meal meal = new Meal(Integer.parseInt(mealId), LocalDateTime.parse(request.getParameter("date")),
                     request.getParameter("description"), Integer.parseInt(request.getParameter("calories")));
             mealDao.update(meal);
         }

@@ -26,11 +26,13 @@
 <hr>
 <h2>Meals</h2>
 <section>
+    <p><a href="meals?action=create">Добавить</a></p>
     <table cellpadding="10" cellspacing="1">
         <tr>
             <td>Дата/Время</td>
             <td>Описание</td>
             <td>Калории</td>
+            <td colspan=2></td>
         </tr>
         <jsp:useBean id="mealList" scope="request" type="java.util.List"/>
         <c:forEach var="meal" items="${mealList}">
@@ -38,6 +40,8 @@
                 <td>${TimeUtil.dateToString(meal.dateTime)}</td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td><a href="meals?action=edit&mealId=${meal.id}">Update</a></td>
+                <td><a href="meals?action=delete&mealId=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>

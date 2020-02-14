@@ -48,7 +48,7 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> getAll() {               //sort for name if equals, sort for email
+    public List<User> getAll() {
         log.info("getAll");
         return repository.values().stream()
                 .sorted(Comparator.comparing(User::getName).thenComparing(User::getEmail))

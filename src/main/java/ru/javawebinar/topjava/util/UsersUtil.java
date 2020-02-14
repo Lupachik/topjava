@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UsersUtil {
+    public static final int USER_ID = 1;
+
     public static final List<User> USERS = Arrays.asList(
             new User("Sergei", "ser@topjava.com", "123456"),
             new User("Ivan", "iv@topjava.com", "qwerty"),

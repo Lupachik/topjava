@@ -52,8 +52,12 @@ public class MealRestController {
     public Collection<MealTo> getAll(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
         log.info("filter of date({} - {} and of time({} - {} for user {}", startDate, endDate, startTime, endTime, userId);
-        // реализация фильтра по датам и времени
-        return null;
+        // implementation filter for date and time
+        Collection<Meal> mealsFilterDate = service.getFilterDate(startDate == null ? LocalDate.MIN : startDate,
+                endDate == null ? LocalDate.MAX : endDate, userId);
+        return MealsUtil.getFilteredTos(mealsFilterDate, SecurityUtil.authUserCaloriesPerDay(),
+                startTime != null ? startTime : LocalTime.MIN,
+                endTime != null ? endTime : LocalTime.MAX);
     }
 
     public void update(Meal meal, int id) {

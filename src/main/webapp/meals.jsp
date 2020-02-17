@@ -15,13 +15,8 @@
             color: red;
         }
         dl {
-            background: none repeat scroll 0 0 #FAFAFA;
             margin: 8px 0;
             padding: 0;
-        }
-        dt {
-            display: inline-block;
-            width: 100px;
         }
         dd {
             display: inline-block;
@@ -37,11 +32,10 @@
     <h2>Meals</h2>
     <form method="post" action="meals?action=filter">
         <dl>
-            <dd>From Date:<input type="date" name="startDate" value=""></dd>
-            <dd>To Date:<input type="date" name="endDate" value=""></dd>
-            <dt></dt>
-            <dd>From Time:<input type="time" name="startTime" value=""></dd>
-            <dd>To Time:<input type="time" name="endTime" value=""></dd>
+            <dd>From Date:<input type="date" name="startDate" value="${param.startDate}"></dd>
+            <dd>To Date:<input type="date" name="endDate" value="${param.endDate}"></dd>
+            <dd>From Time:<input type="time" name="startTime" value="${param.startTime}"></dd>
+            <dd>To Time:<input type="time" name="endTime" value="${param.endTime}"></dd>
         </dl>
         <button type="submit">Filter</button>
     </form>

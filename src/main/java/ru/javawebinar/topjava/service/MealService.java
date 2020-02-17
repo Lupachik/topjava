@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -40,6 +41,11 @@ public class MealService {
     public Collection<Meal> getAll(int userId) {
         log.info("getAll for user {}", userId);
         return repository.getAll(userId);
+    }
+
+    public Collection<Meal> getAll(LocalDateTime startDateTime, LocalDateTime endDateTime,int userId) {
+        log.info("getAll of dateTime ({} - {}) for user {}", startDateTime, endDateTime, userId);
+        return repository.getAll(startDateTime, endDateTime, userId);
     }
 
     public void update(Meal meal, int userId) {

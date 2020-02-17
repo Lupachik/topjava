@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -45,6 +47,13 @@ public class MealRestController {
         log.info("getAll");
         int userId = SecurityUtil.authUserId();
         return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
+    }
+
+    public Collection<MealTo> getAll(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+        int userId = SecurityUtil.authUserId();
+        log.info("filter of date({} - {} and of time({} - {} for user {}", startDate, endDate, startTime, endTime, userId);
+        // реализация фильтра по датам и времени
+        return null;
     }
 
     public void update(Meal meal, int id) {

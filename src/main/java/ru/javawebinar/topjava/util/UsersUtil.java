@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UsersUtil {
-    public static final int USER_ID = SecurityUtil.authUserId();
-    public static final int ADMIN_ID = SecurityUtil.authUserId() + 1;
+    public static final int USER_ID = 1;
+    public static final int ADMIN_ID = 2;
 
     public static final List<User> USERS = Arrays.asList(
             new User(USER_ID, "User", "user@topjava.ru", "123456", Role.ROLE_USER),

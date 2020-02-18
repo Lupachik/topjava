@@ -62,10 +62,10 @@ public class MealServlet extends HttpServlet {
             response.sendRedirect("meals");
 
         } else if("filter".equals(action)){
-            LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
-            LocalDate endDate = LocalDate.parse(request.getParameter("endDate"));
-            LocalTime startTime = LocalTime.parse(request.getParameter("startTime"));
-            LocalTime endTime = LocalTime.parse(request.getParameter("endTime"));
+            LocalDate startDate = getDate(request.getParameter("startDate"));
+            LocalDate endDate = getDate(request.getParameter("endDate"));
+            LocalTime startTime = getTime(request.getParameter("startTime"));
+            LocalTime endTime = getTime(request.getParameter("endTime"));
             request.setAttribute("meals", mealRestController.getAll(startDate, startTime, endDate, endTime));
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
@@ -102,5 +102,13 @@ public class MealServlet extends HttpServlet {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
+    }
+
+    private LocalDate getDate(String strDate) {
+        return strDate.isEmpty() ? null : LocalDate.parse(strDate);
+    }
+
+    private LocalTime getTime(String strTime) {
+        return strTime.isEmpty() ? null : LocalTime.parse(strTime);
     }
 }

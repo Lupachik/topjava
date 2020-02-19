@@ -71,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+    public Collection<Meal> filterDateDetAll(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         log.info("getAll of filter dateTime({} - {}) for user {}", startDateTime, endDateTime, userId);
         return getAllFilter(userId, meal -> DateTimeUtil.isBetween(meal.getDateTime(), startDateTime, endDateTime));
     }

@@ -45,9 +45,9 @@ public class MealService {
         return repository.getAll(userId);
     }
 
-    public Collection<Meal> getAll(LocalDateTime startDateTime, LocalDateTime endDateTime,int userId) {
+    private Collection<Meal> getAll(LocalDateTime startDateTime, LocalDateTime endDateTime,int userId) {
         log.info("getAll of dateTime ({} - {}) for user {}", startDateTime, endDateTime, userId);
-        return repository.getAll(startDateTime, endDateTime, userId);
+        return repository.filterDateDetAll(startDateTime, endDateTime, userId);
     }
 
     public Collection<Meal> getFilterDate(LocalDate startDate, LocalDate endDate, int userId){

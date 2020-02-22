@@ -72,30 +72,12 @@ public class JdbcMealRepository implements MealRepository {
     // ASC or DESC
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? ORDER BY date_time DESC", ROW_MAPPER, userId);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? ORDER BY date_time DESC ", ROW_MAPPER, userId);
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? AND date_time >=? AND date_time <? ORDER BY date_time DESC" , ROW_MAPPER, userId, startDate, endDate);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? AND date_time >=? AND date_time <? ORDER BY date_time DESC", ROW_MAPPER, userId, startDate, endDate);
     }
 
-//    @Override
-//    public List<Meal> getAll(int userId) {
-//        return getAllFiltered(userId, meal -> true);
-//    }
-//
-//    @Override
-//    public List<Meal> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-//        return getAllFiltered(userId, meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDate, endDate));
-//    }
-//
-//    private List<Meal> getAllFiltered(int userId, Predicate<Meal> filter){
-//        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?",ROW_MAPPER, userId);
-//        return meals == null? Collections.emptyList():
-//                meals.stream()
-//                .filter(filter)
-//                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-//                .collect(Collectors.toList());
-//    }
 }

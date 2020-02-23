@@ -23,5 +23,10 @@ public class MealTestData {
     public static final Meal MEAL9 = new Meal(ADMIN_MEAL_ID + 1, of(2020, Month.JANUARY, 30, 14, 0), "Админ Обед", 1000);
     public static final Meal MEAL10 = new Meal(ADMIN_MEAL_ID + 2, of(2020, Month.JANUARY, 30, 21, 0), "Админ Ужин", 500);
 
-
+    public static Meal getMealUpdated(){
+        Meal update = new Meal(MEAL1);
+        update.setDescription("newLaunch");
+        update.setCalories(550);
+        return update;
+    }
 }

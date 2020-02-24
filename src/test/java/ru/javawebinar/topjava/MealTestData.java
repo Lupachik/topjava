@@ -3,8 +3,10 @@ package ru.javawebinar.topjava;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.time.Month;
+import java.util.Arrays;
 
 import static java.time.LocalDateTime.of;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
@@ -28,5 +30,20 @@ public class MealTestData {
         update.setDescription("newLaunch");
         update.setCalories(550);
         return update;
+    }
+    public static Meal getNewMeal(){
+        return new Meal(null, of(2020, Month.FEBRUARY, 23, 22, 22, 22), "new breakfast", 333);
+    }
+
+    public static void assertMatch(Meal actual, Meal expected){
+        assertThat(actual).isEqualToComparingFieldByField(expected);
+    }
+
+    public static void assertMatch(Iterable<Meal> actual, Meal ... expected){
+        assertMatch(actual, Arrays.asList(expected));
+    }
+
+    public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected){
+        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
     }
 }

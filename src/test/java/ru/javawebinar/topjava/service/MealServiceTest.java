@@ -10,7 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -28,7 +31,7 @@ public class MealServiceTest {
     @Test
     public void get(){
         Meal meal = service.get(USER_MEAL_ID, USER_ID);
-        assertThat(meal).isEqualToComparingFieldByField(MEAL1);
+        assertMatch(meal, MEAL1);
     }
 
     @Test(expected = NotFoundException.class)
@@ -59,17 +62,22 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenHalfOpen() {
+        List<Meal> all = service.getBetweenHalfOpen(LocalDate.of(2020, Month.JANUARY, 30),
+                LocalDate.of(2020,Month.JANUARY, 30),USER_ID);
+        assertMatch(all, MEAL3, MEAL2, MEAL1);
     }
 
     @Test
     public void getAll() {
+        List<Meal> all = service.getAll(USER_ID);
+        assertMatch(all, MEAL7, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
     }
 
     @Test
     public void update() {
         Meal updated = getMealUpdated();
         service.update(updated, USER_ID);
-        assertThat(service.get(USER_MEAL_ID,USER_ID)).isEqualToComparingFieldByField(updated);
+        assertMatch(service.get(USER_MEAL_ID, USER_ID), updated);
     }
 
     @Test(expected = NotFoundException.class)
@@ -80,5 +88,11 @@ public class MealServiceTest {
 
     @Test
     public void create() {
+        Meal newMeal = getNewMeal();
+        Meal created = service.create(newMeal, USER_ID);
+        Integer newId = created.getId();
+        newMeal.setId(newId);
+        assertMatch(created, newMeal);
+        assertMatch(service.get(newId, USER_ID), newMeal);
     }
 }

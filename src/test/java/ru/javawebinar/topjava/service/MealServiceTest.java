@@ -45,14 +45,17 @@ public class MealServiceTest {
 
     @Test
     public void deleteNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
         service.delete(1, USER_ID);
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("deleteNotFound");
+        //Assert.assertThrows(NotFoundException.class, ()->service.delete(1, USER_ID)); // change ExpectedException
     }
 
     @Test
     public void deleteNotOwn() throws Exception {
-        thrown.expect(NotFoundException.class);
         service.delete(MEAL1_ID, ADMIN_ID);
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("deleteNotOwn");
     }
 
     @Test
@@ -73,14 +76,16 @@ public class MealServiceTest {
 
     @Test
     public void getNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
         service.get(1, USER_ID);
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("getNotFound");
     }
 
     @Test
     public void getNotOwn() throws Exception {
-        thrown.expect(NotFoundException.class);
         service.get(MEAL1_ID, ADMIN_ID);
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("getNotOwn");
     }
 
     @Test
@@ -92,8 +97,9 @@ public class MealServiceTest {
 
     @Test
     public void updateNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
         service.update(MEAL1, ADMIN_ID);
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("updateNotFound");
     }
 
     @Test

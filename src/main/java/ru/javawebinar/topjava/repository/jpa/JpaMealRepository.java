@@ -22,16 +22,17 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        User ref = em.getReference(User.class, userId); // get user by userId
+        User ref = em.getReference(User.class, userId); // get proxy-user by userId
         meal.setUser(ref);
         if (meal.isNew()) {
             em.persist(meal);
             return meal;
         } else {
-            Meal findMeal = em.find(Meal.class, meal.getId()); // for test updateNotFound
-            if (findMeal != null && findMeal.getUser().getId() == userId) {
-                return em.merge(meal);
-            } else return null;
+            return get(meal.getId(), userId) != null ? em.merge(meal) : null;
+//            Meal findMeal = em.find(Meal.class, meal.getId()); // for control meal to userId
+//            if (findMeal != null && findMeal.getUser().getId() == userId) {
+//                return em.merge(meal);
+//            } else return null;
         }
     }
 

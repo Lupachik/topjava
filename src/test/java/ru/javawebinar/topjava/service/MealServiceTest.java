@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.Stopwatch;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.concurrent.TimeUnit;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -37,23 +39,33 @@ public class MealServiceTest {
     private static StringBuilder logResultTests = new StringBuilder();
 
     //https://user12vv.wordpress.com/2013/11/11/java-junit-rule-%D0%BA%D0%BB%D0%B0%D1%81%D1%81-testwatcher/
+//    @Rule
+//    public TestWatcher testWatcher = new TestWatcher() {
+//        private long start;
+//        private long end;
+//        private long result;
+//
+//        @Override
+//        protected void starting(Description description) {
+//            start = System.currentTimeMillis();
+//        }
+//
+//        @Override
+//        protected void finished(Description description) {
+//            end = System.currentTimeMillis();
+//            result = end - start;
+//            logResultTests.append(description.getMethodName()).append(" ").append(result).append("ms").append("\n");
+//            log.info("\n!!!!!!" + description.getMethodName() + "!!!!!!\n" + result + "ms");
+//        }
+//    };
+
     @Rule
-    public TestWatcher testWatcher = new TestWatcher() {
-        private long start;
-        private long end;
-        private long result;
-
+    public Stopwatch stopwatch = new Stopwatch(){
         @Override
-        protected void starting(Description description) {
-            start = System.currentTimeMillis();
-        }
-
-        @Override
-        protected void finished(Description description) {
-            end = System.currentTimeMillis();
-            result = end - start;
-            logResultTests.append(description.getMethodName()).append(" ").append(result).append("ms").append("\n");
-            log.info("\n!!!!!!" + description.getMethodName() + "!!!!!!\n" + result + "ms");
+        protected void finished(long nanos, Description description) {
+            long millis = TimeUnit.NANOSECONDS.toMillis(nanos);
+            log.info("\n!!!!!!" + description.getMethodName() + "!!!!!!\n" + millis + "ms");
+            logResultTests.append(description.getMethodName()).append(" ").append(millis).append("ms").append("\n");
         }
     };
 

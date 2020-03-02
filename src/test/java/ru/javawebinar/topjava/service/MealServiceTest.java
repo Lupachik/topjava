@@ -1,10 +1,15 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,14 +33,42 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static StringBuilder logResultTests = new StringBuilder();
+
+    //https://user12vv.wordpress.com/2013/11/11/java-junit-rule-%D0%BA%D0%BB%D0%B0%D1%81%D1%81-testwatcher/
+    @Rule
+    public TestWatcher testWatcher = new TestWatcher() {
+        private long start;
+        private long end;
+        private long result;
+
+        @Override
+        protected void starting(Description description) {
+            start = System.currentTimeMillis();
+        }
+
+        @Override
+        protected void finished(Description description) {
+            end = System.currentTimeMillis();
+            result = end - start;
+            logResultTests.append(description.getMethodName()).append(" ").append(result).append("ms").append("\n");
+            log.info("\n!!!!!!" + description.getMethodName() + "!!!!!!\n" + result + "ms");
+        }
+    };
+
+    @AfterClass
+    public static void printResult() {
+        log.info("\n=====================\n" + logResultTests.toString() + "\n=====================");
+    }
 
     @Autowired
     private MealService service;
     @Autowired
     private MealRepository repository;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+//    @Rule
+//    public ExpectedException thrown = ExpectedException.none(); // deprecated
 
     @Test
     public void delete() throws Exception {
@@ -45,17 +78,18 @@ public class MealServiceTest {
 
     @Test
     public void deleteNotFound() throws Exception {
-        service.delete(1, USER_ID);
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("deleteNotFound");
-        //Assert.assertThrows(NotFoundException.class, ()->service.delete(1, USER_ID)); // change ExpectedException
+//        thrown.expect(NotFoundException.class);
+//        thrown.expectMessage("deleteNotFound");
+//        service.delete(1, USER_ID);
+        Assert.assertThrows(NotFoundException.class, () -> service.delete(1, USER_ID)); // change ExpectedException
     }
 
     @Test
     public void deleteNotOwn() throws Exception {
-        service.delete(MEAL1_ID, ADMIN_ID);
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("deleteNotOwn");
+//        thrown.expect(NotFoundException.class);
+//        thrown.expectMessage("deleteNotOwn");
+//        service.delete(MEAL1_ID, ADMIN_ID);
+        Assert.assertThrows(NotFoundException.class, () -> service.delete(MEAL1_ID, ADMIN_ID));
     }
 
     @Test
@@ -76,16 +110,19 @@ public class MealServiceTest {
 
     @Test
     public void getNotFound() throws Exception {
-        service.get(1, USER_ID);
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("getNotFound");
+//        thrown.expect(NotFoundException.class);
+//        thrown.expectMessage("getNotFound");
+//        service.get(1, USER_ID);
+        Assert.assertThrows(NotFoundException.class, () -> service.get(1, USER_ID));
+
     }
 
     @Test
     public void getNotOwn() throws Exception {
-        service.get(MEAL1_ID, ADMIN_ID);
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("getNotOwn");
+//        thrown.expect(NotFoundException.class);
+//        thrown.expectMessage("getNotOwn");
+//        service.get(MEAL1_ID, ADMIN_ID);
+        Assert.assertThrows(NotFoundException.class, () -> service.get(MEAL1_ID, ADMIN_ID));
     }
 
     @Test
@@ -97,9 +134,10 @@ public class MealServiceTest {
 
     @Test
     public void updateNotFound() throws Exception {
-        service.update(MEAL1, ADMIN_ID);
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("updateNotFound");
+//        thrown.expect(NotFoundException.class);
+//        thrown.expectMessage("updateNotFound");
+//        service.update(MEAL1, ADMIN_ID);
+        Assert.assertThrows(NotFoundException.class, () -> service.update(MEAL1, ADMIN_ID));
     }
 
     @Test

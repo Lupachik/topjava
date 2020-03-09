@@ -22,9 +22,9 @@ public abstract class JdbcMealRepository implements MealRepository {
 
     protected final JdbcTemplate jdbcTemplate; // change private on protected for new implementation
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final SimpleJdbcInsert insertMeal;
+    protected final SimpleJdbcInsert insertMeal;
 
     @Autowired
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -37,28 +37,31 @@ public abstract class JdbcMealRepository implements MealRepository {
     }
 
     @Override
-    public Meal save(Meal meal, int userId) {
-        MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", meal.getId())
-                .addValue("description", meal.getDescription())
-                .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
-                .addValue("user_id", userId);
+    public abstract Meal save(Meal meal, int userId);
 
-        if (meal.isNew()) {
-            Number newId = insertMeal.executeAndReturnKey(map);
-            meal.setId(newId.intValue());
-        } else {
-            if (namedParameterJdbcTemplate.update("" +
-                            "UPDATE meals " +
-                            "   SET description=:description, calories=:calories, date_time=:date_time " +
-                            " WHERE id=:id AND user_id=:user_id"
-                    , map) == 0) {
-                return null;
-            }
-        }
-        return meal;
-    }
+//    @Override
+//    public Meal save(Meal meal, int userId) {
+//        MapSqlParameterSource map = new MapSqlParameterSource()
+//                .addValue("id", meal.getId())
+//                .addValue("description", meal.getDescription())
+//                .addValue("calories", meal.getCalories())
+//                .addValue("date_time", meal.getDateTime())
+//                .addValue("user_id", userId);
+//
+//        if (meal.isNew()) {
+//            Number newId = insertMeal.executeAndReturnKey(map);
+//            meal.setId(newId.intValue());
+//        } else {
+//            if (namedParameterJdbcTemplate.update("" +
+//                            "UPDATE meals " +
+//                            "   SET description=:description, calories=:calories, date_time=:date_time " +
+//                            " WHERE id=:id AND user_id=:user_id"
+//                    , map) == 0) {
+//                return null;
+//            }
+//        }
+//        return meal;
+//    }
 
     @Override
     public boolean delete(int id, int userId) {

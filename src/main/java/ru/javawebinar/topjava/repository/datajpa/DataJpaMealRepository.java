@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -21,13 +20,12 @@ public class DataJpaMealRepository implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         meal.setUser(crudUserRepository.getOne(userId));
-        if (meal.isNew()){
-            crudRepository.save(meal);
-        }
-        else if(get(meal.getId(), userId) == null){
+        if (!meal.isNew() && get(meal.getId(), userId) == null){
             return null;
         }
-        return crudRepository.save(meal);
+        else {
+            return crudRepository.save(meal);
+        }
     }
 
     @Override

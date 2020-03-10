@@ -26,4 +26,7 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     List<Meal> getBetweenHalfOpen(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("userId") int userId);
 //    List<Meal> findByUserIdAndDateTimeGreaterThanEqualAndDateTimeLessThanOrderByDateTimeDesc(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
 
+//    https://stackoverflow.com/questions/17431312/what-is-the-difference-between-join-and-join-fetch-when-using-jpa-and-hibernate
+    @Query("SELECT m FROM Meal m JOIN FETCH m.user u WHERE m.id=:id AND u.id=:userId")
+    Meal getWithUser(@Param("id") int id, @Param("userId") int userId);
 }

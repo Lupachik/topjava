@@ -56,7 +56,7 @@ public class User extends AbstractNamedEntity {
 //    https://stackoverflow.com/questions/5903774/ordering-a-join-fetched-collection-in-jpa-using-jpql-hql
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("dateTime DESC") //in db and test sort to datetime
-    protected List<Meal> meals; // not private for method getWithMeals in CrudUserRepository
+    private List<Meal> meals;
 
     public User() {
     }

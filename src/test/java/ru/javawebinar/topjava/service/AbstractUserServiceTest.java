@@ -1,10 +1,12 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -28,15 +30,25 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     private UserRepository repository;
 
     @Autowired
-    private CacheManager cacheManager;
+    private Environment environment;
 
     @Autowired
+    private CacheManager cacheManager;
+
+//    http://www.seostella.com/ru/article/2012/02/12/ispolzovanie-annotacii-autowired-v-spring-3.html
+//    https://stackoverflow.com/questions/24273476/when-no-qualifying-bean-of-type-found-for-dependency-is-ok/24273528#24273528
+//    default Autowired(required=true)}
+    @Autowired(required = false)
     protected JpaUtil jpaUtil;
 
     @Before
     public void setUp() throws Exception {
         cacheManager.getCache("users").clear();
-        jpaUtil.clear2ndLevelHibernateCache();
+
+        for (String profile: environment.getActiveProfiles()){
+            if(profile.equals("jdbc")) return;
+        }
+        jpaUtil.clear2ndLevelHibernateCache(); // if jdbc no use
     }
 
     @Test
@@ -96,6 +108,11 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void createWithException() throws Exception {
+
+        for (String profile: environment.getActiveProfiles()){
+            Assume.assumeFalse(profile.equals("jdbc"));
+        }
+
         validateRootCause(() -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "  ", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.ROLE_USER)), ConstraintViolationException.class);

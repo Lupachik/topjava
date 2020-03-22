@@ -97,9 +97,11 @@ public class JdbcUserRepository implements UserRepository {
 
     // get list user roles from db
     private User setRolesFromDb(User user) {
-        List<Role> roles = jdbcTemplate.query("SELECT role FROM user_roles WHERE user_id=?",
-                (rs, rowNum) -> Role.valueOf(rs.getString("role")), user.getId());
-        user.setRoles(roles);
+        if (user != null) {
+            List<Role> roles = jdbcTemplate.query("SELECT role FROM user_roles WHERE user_id=?",
+                    (rs, rowNum) -> Role.valueOf(rs.getString("role")), user.getId());
+            user.setRoles(roles);
+        }
         return user;
     }
 
@@ -116,7 +118,7 @@ public class JdbcUserRepository implements UserRepository {
         List<Role> roleList = new ArrayList<>(roleSet);
 
         if (roleSet.size() != 0) {
-            jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUE (?, ?)", new BatchPreparedStatementSetter() {
+            jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)", new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     ps.setInt(1, user.getId());

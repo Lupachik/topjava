@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -26,8 +25,8 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private MealRepository repository;
 
-    @Autowired
-    private Environment environment;
+//    @Autowired
+//    private Environment environment;
 
     @Test
     public void delete() throws Exception {
@@ -112,9 +111,7 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 //        https://www.ekiras.com/2015/09/spring-how-to-get-current-profiles-in-spring-application.html
 //        http://iliachemodanov.ru/ru/blog-ru/12-tools/57-junit-ignore-test-by-condition-ru
 
-        for (String profile: environment.getActiveProfiles()){
-            Assume.assumeFalse(profile.equals("jdbc")); // test ignore if (true) --> Assume.java Doc
-        }
+        Assume.assumeTrue(isJpaHave());
 
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);

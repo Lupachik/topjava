@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping(value = MealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
 
-    public static final String REST_URL = "rest/meals";
+    public static final String REST_URL = "/rest/meals";
 
     @Override
     @GetMapping("/{id}")
@@ -56,12 +57,13 @@ public class MealRestController extends AbstractMealController {
     }
 
     @Override
+//    https://blog.codeleak.pl/2014/06/spring-4-datetimeformat-with-java-8.html
     @GetMapping("/filter")
     public List<MealTo> getBetween(
-            @RequestParam("startDate") LocalDate startDate,
-            @RequestParam("startTime") LocalTime startTime,
-            @RequestParam("endDate") LocalDate endDate,
-            @RequestParam("endTime") LocalTime endTime
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime
     ) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }

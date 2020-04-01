@@ -60,10 +60,10 @@ public class MealRestController extends AbstractMealController {
 //    https://blog.codeleak.pl/2014/06/spring-4-datetimeformat-with-java-8.html
     @GetMapping("/filter")
     public List<MealTo> getBetween(
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime
+            @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("startTime") LocalTime startTime,
+            @RequestParam("endDate") LocalDate endDate,
+            @RequestParam("endTime") LocalTime endTime
     ) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }

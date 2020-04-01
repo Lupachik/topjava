@@ -88,11 +88,28 @@ class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void getBetween() throws Exception{
         List<MealTo> mealTos = List.of(createTo(MEAL5, true), createTo(MEAL1, false));
-        perform(MockMvcRequestBuilders.get(REST_URL + "filter?" +
-                "startDate=2020-01-30&" +
-                "startTime=09:00:00&" +
-                "endDate=2020-01-31&" +
-                "endTime=11:00:00"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDate", "2020-01-30")
+                .param("startTime","09:00:00")
+                .param("endDate", "2020-01-31")
+                .param("endTime", "11:00:00"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJsonTest(mealTos));
+    }
+
+    @Test
+    void getBetweenWithNull() throws Exception{
+        List<MealTo> mealTos = List.of(createTo(MEAL7, true), createTo(MEAL6, true),
+                createTo(MEAL5, true), createTo(MEAL4, true),
+                createTo(MEAL3, false), createTo(MEAL2, false),
+                createTo(MEAL1, false));
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDate", "")
+                .param("startTime","")
+                .param("endDate", "")
+                .param("endTime", ""))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

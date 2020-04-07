@@ -1,7 +1,9 @@
+var mealUrl = "ajax/profile/meals/" ;
+
 // $(document).ready(function () {
 $(function () {
     makeEditable({
-            ajaxUrl: "ajax/profile/meals/",
+            ajaxUrl: mealUrl,
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
@@ -34,3 +36,19 @@ $(function () {
         }
     );
 });
+
+function updateFilteredTable(){
+    $.ajax({
+        type: "GET",
+        url: mealUrl + "filter",
+        data: $("#filter").serialize()
+    }).done(function (data) {
+        context.datatableApi.clear().rows.add(data).draw();
+    });
+}
+
+function clearFilter(){
+    $("#filter")[0].reset();
+    updateTable()
+}
+

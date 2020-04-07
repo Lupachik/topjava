@@ -1,3 +1,8 @@
+
+function updateTable() {
+    $.get(context.ajaxUrl, updateTableByDate);
+}
+
 // $(document).ready(function () {
 $(function () {
     makeEditable({

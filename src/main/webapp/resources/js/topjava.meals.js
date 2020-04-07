@@ -42,13 +42,11 @@ function updateFilteredTable(){
         type: "GET",
         url: mealUrl + "filter",
         data: $("#filter").serialize()
-    }).done(function (data) {
-        context.datatableApi.clear().rows.add(data).draw();
-    });
+    }).done(updateTableByDate);
 }
 
 function clearFilter(){
     $("#filter")[0].reset();
-    updateTable()
+    $.get(mealUrl, updateTableByDate)
 }
 

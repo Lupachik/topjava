@@ -1,7 +1,6 @@
-var context, form;
+var form;
 
 function makeEditable(ctx) {
-    context = ctx;
     form = $('#detailsForm');
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
@@ -24,7 +23,7 @@ function add() {
 
 function deleteRow(id) {
     $.ajax({
-        url: context.ajaxUrl + id,
+        url: ajaxUrl + id,
         type: "DELETE"
     }).done(function () {
         updateTable();
@@ -33,13 +32,13 @@ function deleteRow(id) {
 }
 
 function updateTableByDate(data) {
-    context.datatableApi.clear().rows.add(data).draw();
+        datatableApi.clear().rows.add(data).draw();
 }
 
 function save() {
     $.ajax({
         type: "POST",
-        url: context.ajaxUrl,
+        url: ajaxUrl,
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");

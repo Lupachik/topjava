@@ -1,12 +1,14 @@
+var ajaxUrl = "ajax/admin/users/";
+var datatableApi;
 
 function updateTable() {
-    $.get(context.ajaxUrl, updateTableByDate);
+    $.get(ajaxUrl, updateTableByDate);
 }
 
 // $(document).ready(function () {
 $(function () {
     makeEditable({
-            ajaxUrl: "ajax/admin/users/",
+            url: ajaxUrl,
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,

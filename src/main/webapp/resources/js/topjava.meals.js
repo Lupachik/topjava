@@ -1,9 +1,10 @@
-var mealUrl = "ajax/profile/meals/" ;
+var ajaxUrl = "ajax/profile/meals/" ;
+var datatableApi;
 
 // $(document).ready(function () {
 $(function () {
     makeEditable({
-            ajaxUrl: mealUrl,
+            url: ajaxUrl,
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
@@ -40,7 +41,7 @@ $(function () {
 function updateFilteredTable(){
     $.ajax({
         type: "GET",
-        url: mealUrl + "filter",
+        url: ajaxUrl + "filter",
         data: $("#filter").serialize()
     }).done(updateTableByDate);
 }

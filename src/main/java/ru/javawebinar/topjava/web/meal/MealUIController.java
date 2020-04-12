@@ -18,6 +18,12 @@ import java.util.List;
 public class MealUIController extends AbstractMealController {
 
     @Override
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Meal get(@PathVariable int id) {
+        return super.get(id);
+    }
+
+    @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealTo> getAll() {
         return super.getAll();
@@ -35,6 +41,8 @@ public class MealUIController extends AbstractMealController {
     public void createOrUpdate(Meal meal) {
         if (meal.isNew()) {
             super.create(meal);
+        } else {
+            super.update(meal, meal.getId());
         }
     }
 

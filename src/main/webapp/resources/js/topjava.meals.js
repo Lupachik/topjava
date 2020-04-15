@@ -13,6 +13,20 @@ function clearFilter() {
     $.get(mealAjaxUrl, updateTableByData);
 }
 
+// https://jquery-docs.ru/jQuery.ajax/#using-converters
+// https://antonshevchuk.gitbooks.io/jquery-for-beginners/content/60_ajax/ajax-tuning.html
+// $.ajaxSetup({
+//     converters:{
+//         "text json": function (textValue) {
+//             let jsonValue = JSON.parse(textValue);
+//             $(jsonValue).each(function () {
+//                 this.dateTime = this.dateTime.replace('T', ' ').substring(0, 16);
+//             });
+//             return jsonValue;
+//         }
+//     }
+// });
+
 $(function () {
     makeEditable({
         ajaxUrl: mealAjaxUrl,

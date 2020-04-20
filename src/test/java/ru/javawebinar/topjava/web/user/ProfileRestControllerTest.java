@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.UserUtil;
+import ru.javawebinar.topjava.util.exception.ErrorType;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
@@ -66,6 +67,16 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void registerInValid() throws Exception {
+        UserTo newTo = new UserTo(null, null, null, null, 1500);
+        perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword", 1500);
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
@@ -75,5 +86,16 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         USER_MATCHER.assertMatch(userService.get(USER_ID), UserUtil.updateFromTo(new User(USER), updatedTo));
+    }
+
+    @Test
+    void updateInValid() throws Exception {
+        UserTo updatedTo = new UserTo(null, null, null, null, 1500);
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+
     }
 }

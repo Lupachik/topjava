@@ -135,4 +135,15 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
         assertFalse(userService.get(USER_ID).isEnabled());
     }
+
+    @Test
+    void updateInValid() throws Exception {
+        User updated = new User(USER);
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 }

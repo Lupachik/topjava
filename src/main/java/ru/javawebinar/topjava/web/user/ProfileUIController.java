@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.web.SecurityUtil;
-import ru.javawebinar.topjava.web.UserDuplEmailValidator;
+import ru.javawebinar.topjava.web.UserDublEmailValidator;
 
 import javax.validation.Valid;
 
@@ -22,7 +22,7 @@ public class ProfileUIController extends AbstractUserController {
 
 //    https://mkyong.com/spring-mvc/spring-mvc-form-handling-example/
     @Autowired
-UserDuplEmailValidator duplEmailValidator;
+    UserDublEmailValidator duplEmailValidator;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {

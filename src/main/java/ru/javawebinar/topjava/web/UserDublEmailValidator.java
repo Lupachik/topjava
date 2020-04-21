@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 
 //https://mkyong.com/spring-mvc/spring-mvc-form-handling-example/
 
 @Component
-public class UserDuplEmailValidator implements Validator {
+public class UserDublEmailValidator implements Validator {
 
     @Autowired
     UserService userService;
@@ -26,7 +27,7 @@ public class UserDuplEmailValidator implements Validator {
         UserTo userTo = (UserTo) o;
 
         if(userService.getByEmail(userTo.getEmail()) != null){
-            errors.rejectValue("email", "user.duplemail");
+            errors.rejectValue("email", "user.dublemail");
         }
 
     }
